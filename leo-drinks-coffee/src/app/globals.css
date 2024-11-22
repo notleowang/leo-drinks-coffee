@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--background: #E6E3DB;
+	--foreground: #0F0E0A;
+	--primary: #C6A37D;
+	--secondary: #B6BBAB;
+	--tertiary: #A5AE9B;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+} */
+
+body {
+	color: var(--foreground);
+	background: var(--background);
+	max-width: 800px;
+	margin: 8rem auto;
+}
+
+h1 {
+	font-size: 24px;
+	font-weight: 600;
+	padding-bottom: 1rem;
+}
+
+nav {
+	color: var(--tertiary);
+
+	a:hover {
+		color: var(--primary);
+	}
+}
