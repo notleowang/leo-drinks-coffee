@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Navbar from '../ui/navbar';
 import { toSlug } from '@/utils/slug';
 
+// temp
 const entries = [
     { id: '1', title: 'Arabica', country: 'USA', city: 'California', date: '2024-11-15' },
     { id: '2', title: 'Modus', country: 'Canada', city: 'Vancouver', date: '2024-11-10' },
