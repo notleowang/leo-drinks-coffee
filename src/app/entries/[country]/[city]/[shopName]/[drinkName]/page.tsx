@@ -12,21 +12,22 @@ export async function generateStaticParams() {
     return entries.map((entry) => ({
         country: toSlug(entry.country),
         city: toSlug(entry.city),
-        title: toSlug(entry.title),
+        shopName: toSlug(entry.title),
+        drinkName: "placeholder"
     }));
 }
 
 export default async function Page({
     params,
 }: {
-    params: Promise<{ country: string; city: string; title: string; }>
+    params: Promise<{ country: string; city: string; shopName: string; drinkName: string}>
 }) {
-    const { country, city, title } = await params
+    const { country, city, shopName, drinkName } = await params
     return (
         <div>
             <Navbar />
-            {country}{city}
-            {title}
+            {country}{city}{shopName}
+            {drinkName}
         </div>
     )
 }

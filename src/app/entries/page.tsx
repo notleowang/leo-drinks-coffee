@@ -1,31 +1,59 @@
-import Link from 'next/link';
-
 import Navbar from '../ui/navbar';
-import { toSlug } from '@/utils/slug';
+import Filters from '../ui/filters';
+import ReviewCard from '../components/ReviewCard';
+import { useState } from 'react';
+import { getCoffeeReviews, getCoffeeShops } from '@/utils/supabase/supabase';
 
-// temp
-const entries = [
-    { id: '1', title: 'Arabica', country: 'USA', city: 'California', date: '2024-11-15' },
-    { id: '2', title: 'Modus', country: 'Canada', city: 'Vancouver', date: '2024-11-10' },
-];
+export default async function Page() {
+    const reviews = await getCoffeeReviews();
+    const coffeeShops = await getCoffeeShops();
 
-export default function Page() {
+    // Map coffee shop IDs to names for easier lookup
+    let coffeeShopMap = new Map();
+    for (let shop of coffeeShops) {
+
+        // Map looks like this:
+        // { id, {name, country, city} }
+        coffeeShopMap.set(shop.id, {
+            name: shop.name,
+            country: shop.country,
+            city: shop.city
+        });
+    }
+
     return (
         <div>
             <Navbar />
 
-            <div className="text-center pb-16">
+            <div className="text-center">
                 <h1>ENTRIES</h1>
-                <p>Contains all my reviews.</p>
             </div>
 
-            <ul>
-                {entries.map((entry) => (
-                    <li key={entry.id}>
-                        <Link href={`/entries/${toSlug(entry.country)}/${toSlug(entry.city)}/${toSlug(entry.title)}`}>{entry.title}</Link>
-                    </li>
-                ))}
-            </ul>
+            <div className="filters-section flex justify-center my-16">
+                <Filters />
+            </div>
+
+            <div className="sort-section border-b-2 border-dotted border-foreground pb-2 my-16 text-end">
+                <p>SORT BY</p>
+            </div>
+
+            <div className="grid grid-cols-3 gap-x-1 gap-y-1">
+                {reviews.map((review) => {
+                    return (
+                        <ReviewCard
+                            key={review.id}
+                            shopId={review.coffee_shop_id}
+                            drinkName={review.drink_name}
+                            coffeeShopMap={coffeeShopMap}
+                            rating={review.rating}
+                            tags={review.tags}
+                            date={review.visit_date}
+                            price={review.price}
+                            poopRating={review.poop_rating}
+                        />
+                    )
+                })}
+            </div>
         </div>
     );
 }
