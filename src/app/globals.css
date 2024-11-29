@@ -30,10 +30,55 @@ h1 {
 	padding-bottom: 1rem;
 }
 
+h3 {
+	font-size: 24px;
+	font-weight: 600;
+}
+
+h4 {
+	font-size: 18px;
+}
+
 nav {
 	color: var(--tertiary);
 
 	a:hover {
 		color: var(--primary);
+	}
+}
+
+/* REVIEWCARD STYLES */
+.review-card {
+	background: #B6BBAB;
+	color: var(--background);
+}
+
+
+.review-card:hover {
+	background: var(--tertiary);
+
+	.review-details {
+		visibility: visible;
+	}
+}
+
+.review-details {
+	visibility: hidden;
+
+	p {
+		font-size: 14px;
+	}
+}
+
+.date-tag {
+	p {
+		font-size: 12px;
+	}
+}
+
+.filters-section {
+	p {
+		font-size: 16px;
+		font-weight: 600;
 	}
 }
