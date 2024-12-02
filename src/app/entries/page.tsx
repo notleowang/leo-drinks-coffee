@@ -1,25 +1,25 @@
-import Navbar from '../ui/navbar';
-import Filters from '../ui/filters';
-import ReviewCard from '../components/ReviewCard';
-import { useState } from 'react';
+import Navbar from '../components/ui/Navbar';
+import ReviewTags from '../components/ui/ReviewTags';
+import Reviews from '../components/Reviews';
 import { getCoffeeReviews, getCoffeeShops } from '@/utils/supabase/supabase';
+import { getQueryClient } from '@/lib/query';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
 export default async function Page() {
-    const reviews = await getCoffeeReviews();
-    const coffeeShops = await getCoffeeShops();
 
-    // Map coffee shop IDs to names for easier lookup
-    let coffeeShopMap = new Map();
-    for (let shop of coffeeShops) {
+    const queryClient = getQueryClient();       // creates a QueryClient when user enters the "Entries" page.
 
-        // Map looks like this:
-        // { id, {name, country, city} }
-        coffeeShopMap.set(shop.id, {
-            name: shop.name,
-            country: shop.country,
-            city: shop.city
-        });
-    }
+    // Prefetch the coffee-reviews data.
+    await queryClient.prefetchQuery({
+        queryKey: ['reviews'],
+        queryFn: getCoffeeReviews,
+    })
+
+    // Prefetch the coffee-shops data.
+    await queryClient.prefetchQuery({
+        queryKey: ['shops'],
+        queryFn: getCoffeeShops,
+    })
 
     return (
         <div>
@@ -29,8 +29,8 @@ export default async function Page() {
                 <h1>ENTRIES</h1>
             </div>
 
-            <div className="filters-section flex justify-center my-16">
-                <Filters />
+            <div className="review-tags-section flex justify-center my-16">
+                <ReviewTags />
             </div>
 
             <div className="sort-section border-b-2 border-dotted border-foreground pb-2 my-16 text-end">
@@ -38,21 +38,9 @@ export default async function Page() {
             </div>
 
             <div className="grid grid-cols-3 gap-x-1 gap-y-1">
-                {reviews.map((review) => {
-                    return (
-                        <ReviewCard
-                            key={review.id}
-                            shopId={review.coffee_shop_id}
-                            drinkName={review.drink_name}
-                            coffeeShopMap={coffeeShopMap}
-                            rating={review.rating}
-                            tags={review.tags}
-                            date={review.visit_date}
-                            price={review.price}
-                            poopRating={review.poop_rating}
-                        />
-                    )
-                })}
+                <HydrationBoundary state={dehydrate(queryClient)}>
+                    <Reviews />
+                </HydrationBoundary>
             </div>
         </div>
     );

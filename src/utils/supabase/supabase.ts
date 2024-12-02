@@ -1,30 +1,40 @@
+'use server';
+
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
+// supabase is the db
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // returns the coffee-reviews table
-export async function getCoffeeReviews(filters: string[] = []) {
-    const { data, error } = await supabase.from('coffee-reviews').select();
+export async function getCoffeeReviews() {
+    console.log("Fetching Coffee Reviews");
+
+    const { data, error } = await supabase
+        .from('coffee-reviews')
+        .select();
 
     if (error) {
         throw new Error(error.message);
     }
 
-    console.log("Fetching Coffee Reviews");
     return data;
 }
 
+// returns the coffee-shops table
 export async function getCoffeeShops() {
-    const { data, error } = await supabase.from('coffee-shops').select();
+    console.log("Fetching Coffee Shops");
+
+    const { data, error } = await supabase
+        .from('coffee-shops')
+        .select();
 
     if (error) {
         throw new Error(error.message);
     }
 
-    console.log("Fetching Coffee Shops");
     return data;
 }
 

@@ -1,4 +1,4 @@
-import Navbar from "@/app/ui/navbar";
+import Navbar from "@/app/components/ui/Navbar";
 import { toSlug } from "@/utils/slug";
 
 // temp
