@@ -1,9 +1,10 @@
 import Navbar from '../components/ui/Navbar';
 import ReviewTags from '../components/ui/ReviewTags';
 import Reviews from '../components/Reviews';
-import { getCoffeeReviews, getCoffeeShops } from '@/utils/supabase/supabase';
+import { getCoffeeReviews, getCoffeeShops } from '@/api/supabase/supabase';
 import { getQueryClient } from '@/lib/query';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { FilterProvider } from '@/contexts/FilterContext';
 
 export default async function Page() {
 
@@ -29,19 +30,21 @@ export default async function Page() {
                 <h1>ENTRIES</h1>
             </div>
 
-            <div className="review-tags-section flex justify-center my-16">
-                <ReviewTags />
-            </div>
+            <FilterProvider>
 
-            <div className="sort-section border-b-2 border-dotted border-foreground pb-2 my-16 text-end">
-                <p>SORT BY</p>
-            </div>
+                <div className="review-tags-section flex justify-center my-16">
+                    <ReviewTags />
+                </div>
 
-            <div className="grid grid-cols-3 gap-x-1 gap-y-1">
+                <div className="sort-section border-b-2 border-dotted border-foreground pb-2 my-16 text-end">
+                    <p>SORT BY</p>
+                </div>
+
                 <HydrationBoundary state={dehydrate(queryClient)}>
                     <Reviews />
                 </HydrationBoundary>
-            </div>
+
+            </FilterProvider>
         </div>
     );
 }

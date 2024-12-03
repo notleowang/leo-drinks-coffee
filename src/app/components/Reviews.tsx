@@ -1,16 +1,15 @@
 'use client'
 
 import Link from "next/link";
-import { toSlug } from "@/utils/slug";
-import { getCoffeeReviews, getCoffeeShops } from '@/utils/supabase/supabase';
+// import { toSlug } from "@/utils/slug";
+import { getCoffeeReviews, getCoffeeShops } from '@/api/supabase/supabase';
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import { useFilter } from "@/contexts/FilterContext";
 
 export default function Reviews() {
 
-	const params = useSearchParams();
-	const tags = params.get('tag');
+	const { selectedFilters } = useFilter();
 
 	const { data: reviews, error: reviewsQueryError } = useQuery({
 		queryKey: ['reviews'],
@@ -37,20 +36,31 @@ export default function Reviews() {
 	}
 
 	const filteredReviews = useMemo(() => {
-		if (tags && reviews) {
-			return reviews.filter((review: any) => review.tags.includes(tags));
+		if (reviews && selectedFilters.length > 0) {
+			return reviews.filter((review) =>
+				selectedFilters.every((filter) => review.tags.includes(filter))
+			);
 		}
-		return reviews;
-	}, [reviews, tags]);
+		return reviews || [];
+	}, [reviews, selectedFilters]);
 
-	if (filteredReviews && reviews) {
+	if (reviewsQueryError) {
+		console.log(reviewsQueryError.message);
+	}
+
+	if (shopsQueryError) {
+		console.log(shopsQueryError.message);
+	}
+
+	if (filteredReviews.length > 0) {
 		return (
-			<>
-				{filteredReviews.map((review: any, idx) => {
+			<div className="grid grid-cols-3 gap-x-1 gap-y-1">
+				{filteredReviews.map((review, idx) => {
 					const shop = coffeeShopMap.get(review.coffee_shop_id);
 					const [year, month, day] = review.visit_date.toLocaleString().split('-');
 					const visitDate = `${month}-${day}-${year}`;
-					const entryURL = `/entries/${shop.country}/${shop.city}/${toSlug(shop.name)}/${toSlug(review.drink_name)}`;
+					// const entryURL = `/entries/${toSlug(shop.country)}/${toSlug(shop.city)}/${toSlug(shop.name)}/${toSlug(review.drink_name)}`;
+					const entryURL = `/entries/${review.id}`;
 
 					return (
 						<Link key={idx} href={entryURL}>
@@ -70,6 +80,7 @@ export default function Reviews() {
 											<h4>{shop.name.toUpperCase()}</h4>
 										</div>
 
+										{/* TAGS (for testing) */}
 										<div>
 											{review.tags.map((tag: string, idx: number) => {
 												return (
@@ -91,10 +102,13 @@ export default function Reviews() {
 						</Link>
 					)
 				})}
-			</>
+			</div>
 		)
-	}
-	else if (reviewsQueryError) {
-		return <p>Error: {reviewsQueryError.message}</p>
+	} else {
+		return (
+			<div className="text-center">
+				<p>Could not find anything under those filters</p>
+			</div>
+		)
 	}
 }

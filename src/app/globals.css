@@ -83,6 +83,6 @@ nav {
 	}
 
 	.selected {
-		background: var(--foreground);
+		opacity: 100%;
 	}
 }

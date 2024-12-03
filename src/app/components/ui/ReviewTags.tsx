@@ -1,10 +1,11 @@
 'use client'
 
+import { useFilter } from "@/contexts/FilterContext";
 import FilterButton from "../FilterButton";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function ReviewTags() {
+
+    const { selectedFilters, setSelectedFilters } = useFilter();
 
     const filterOptions = [
         { text: "HOT", color: "bg-[#DF8A8A]", type: "hot" },
@@ -15,30 +16,15 @@ export default function ReviewTags() {
         { text: "NUTTY", color: "bg-[#CBA772]", type: "nutty" },
     ];
 
-    // const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-    // const [filteredReviews, setFilteredReviews] = useState<any[]>([]);
-
-    // const setFilter = (filter: string) => () => {
-    //     if (selectedFilters.includes(filter)) {
-    //         setSelectedFilters(selectedFilters.filter((selectedFilter) => selectedFilter !== filter));
-    //     } else {
-    //         setSelectedFilters([...selectedFilters, filter]);
-    //     }
-    // }
-
-    const router = useRouter();
-
     const setFilter = (filter: string) => {
-        if (filter) {
-            router.push("?tag=" + filter);
-        }
-        if (!filter) {
-            router.push("/");
+        if (selectedFilters.includes(filter)) {
+            setSelectedFilters(selectedFilters.filter((selectedFilter) => selectedFilter !== filter));
+        } else {
+            setSelectedFilters([...selectedFilters, filter]);
         }
     }
 
     return (
-
         <div className="w-4/6 flex flex-wrap justify-center gap-x-2 gap-y-2">
             {filterOptions.map((filter, idx) => {
                 return (
@@ -47,8 +33,8 @@ export default function ReviewTags() {
                         text={filter.text}
                         color={filter.color}
                         type={filter.type}
-                        setFilter={setFilter}
-                        // isSelected={selectedFilters.includes(filter.type)}
+                        onClickFunction={setFilter}
+                        isSelected={selectedFilters.includes(filter.type)}
                     />
                 )
             })}
