@@ -38,13 +38,18 @@ export async function getCoffeeShops() {
     return data;
 }
 
-export async function getCoffeeShopName(review: any) {
-    const { data, error } = await supabase.from('coffee-shops').select('name').eq('id', review.coffee_shop_id);
+// returns the coffee-review given the review_id
+export async function getReview(review_id: string) {
+    console.log("Fetching Coffee Review");
+
+    const { data, error } = await supabase
+        .from('coffee-reviews')
+        .select()
+        .eq('id', review_id);
 
     if (error) {
         throw new Error(error.message);
     }
 
-    console.log(data);
     return data;
 }
