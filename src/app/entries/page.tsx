@@ -36,7 +36,7 @@ export default async function Page() {
                     <ReviewTags />
                 </div>
 
-                <div className="sort-section border-b-2 border-dotted border-foreground pb-2 my-16 text-end">
+                <div className="sort-section my-16 text-end">
                     <p>SORT BY</p>
                 </div>
 

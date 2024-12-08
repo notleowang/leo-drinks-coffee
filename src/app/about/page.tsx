@@ -25,13 +25,6 @@ export default function Page() {
 				</div>
 
 				<div>
-					<h1>INVENTORY</h1>
-					<p>This is my current home barista setup:</p>
-					{/* Grinder: Turin DF64 Gen 2
-					Espresso Machine: Breville Bambino */}
-				</div>
-
-				<div>
 					<h1>DISCLAIMER</h1>
 					<p>All entries are my own thoughts and opinions. You may disagree with some of my opinions and that is totally fine.</p>
 				</div>

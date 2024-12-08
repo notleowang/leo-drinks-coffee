@@ -18,8 +18,7 @@ const Navbar = () => {
     }
 
     return (
-        <nav className="pb-12">
-
+        <nav>
             <span>
                 <Link href="/">leo_plus_coffee</Link>
                 {

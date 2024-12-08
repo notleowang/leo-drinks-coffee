@@ -29,7 +29,9 @@ export default function RootLayout({
 	return (
 		<html lang="en" className={inter.className}>
 			<body>
-				{children}
+				<div className="canvas">
+					{children}
+				</div>
 			</body>
 		</html>
 	);

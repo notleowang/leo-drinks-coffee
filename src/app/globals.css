@@ -19,9 +19,14 @@
 
 body {
 	color: var(--foreground);
-	background: var(--background);
-	max-width: 800px;
-	margin: 8rem auto;
+	background-color: var(--background);
+	margin: 0;
+}
+
+.canvas {
+	max-width: 1000px;
+	margin: 10px auto;
+	padding: 75px;
 }
 
 h1 {
@@ -40,6 +45,7 @@ h4 {
 }
 
 nav {
+	margin-bottom: 48px;
 	color: var(--tertiary);
 
 	a:hover {
@@ -49,13 +55,13 @@ nav {
 
 /* REVIEWCARD STYLES */
 .review-card {
-	background: #B6BBAB;
+	background-color: #c7c4bd;
 	color: var(--background);
 }
 
 
 .review-card:hover {
-	background: var(--tertiary);
+	background-color: var(--tertiary);
 
 	.review-details {
 		visibility: visible;
